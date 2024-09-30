@@ -2,8 +2,10 @@ package com.jeffersonjdev.demo.controller;
 
 
 import com.jeffersonjdev.demo.dto.UserRequest;
+import com.jeffersonjdev.demo.dto.UserResponse;
 import com.jeffersonjdev.demo.entity.User;
 import com.jeffersonjdev.demo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +22,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid UserRequest userRequest) {
        User user = userRequest.toModel();
-       User userSaved = userService.registerUser(user);
+       UserResponse userSaved = userService.registerUser(user);
        return ResponseEntity.ok().body(userSaved);
     }
 }
