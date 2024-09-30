@@ -1,5 +1,6 @@
 package com.jeffersonjdev.demo.service;
 
+import com.jeffersonjdev.demo.dto.UserResponse;
 import com.jeffersonjdev.demo.entity.User;
 import com.jeffersonjdev.demo.repository.UserRepository;
 import com.jeffersonjdev.demo.utils.RandomString;
@@ -16,7 +17,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(User user) {
+    public UserResponse registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()) != null){
             throw new RuntimeException("Email already registered");
         } else {
@@ -27,7 +28,9 @@ public class UserService {
             user.setVerificationCode(randomCode);
 
             User savedUser = userRepository.save(user);
-            return savedUser;
+
+            UserResponse userResponse = new UserResponse(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getPassword());
+            return userResponse;
         }
     }
 }
